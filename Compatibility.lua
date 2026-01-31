@@ -423,6 +423,54 @@ if not C_SpecializationInfo.GetSpecializationInfo then
     end
 end
 
+-- GetTalentInfo wrapper
+if not C_SpecializationInfo.GetTalentInfo then
+    C_SpecializationInfo.GetTalentInfo = function(talentIndex, specIndex)
+        -- Classic uses GetTalentInfo with different parameters
+        if GetTalentInfo then
+            return GetTalentInfo(talentIndex, specIndex)
+        end
+        return nil
+    end
+end
+
+-- ============================================================================
+-- Global Talent Functions Compatibility
+-- ============================================================================
+
+-- GetTalentInfoByID wrapper (Retail function)
+if not GetTalentInfoByID then
+    GetTalentInfoByID = function(talentID, specGroup)
+        -- In Classic, talents work differently (tree-based, not choice-based)
+        -- This is a stub that returns nil, which the calling code handles
+        return nil
+    end
+end
+
+-- IsPlayerSpell wrapper
+if not IsPlayerSpell then
+    IsPlayerSpell = function(spellID)
+        -- Check if player knows the spell
+        local name = GetSpellInfo(spellID)
+        if not name then return false end
+        
+        -- Check spellbook
+        local i = 1
+        while true do
+            local spellName, subSpellName = GetSpellName(i, "spell")
+            if not spellName then break end
+            
+            local sid = select(7, GetSpellInfo(i, "spell"))
+            if sid == spellID then
+                return true
+            end
+            i = i + 1
+        end
+        
+        return false
+    end
+end
+
 -- ============================================================================
 -- C_LossOfControl API Compatibility
 -- ============================================================================
@@ -505,6 +553,32 @@ if not AuraUtil.FindAura then
         end
         
         return nil
+    end
+end
+
+-- ============================================================================
+-- C_PetBattles API Compatibility
+-- ============================================================================
+
+if not C_PetBattles then
+    C_PetBattles = {}
+    
+    C_PetBattles.IsInBattle = function()
+        -- Not available in Classic
+        return false
+    end
+end
+
+-- ============================================================================
+-- C_SpellActivationOverlay API Compatibility
+-- ============================================================================
+
+if not C_SpellActivationOverlay then
+    C_SpellActivationOverlay = {}
+    
+    C_SpellActivationOverlay.IsSpellOverlayed = function(spellID)
+        -- Not available in Classic
+        return false
     end
 end
 
