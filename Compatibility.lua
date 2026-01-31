@@ -738,4 +738,7 @@ end
 ns.IsClassicAPI = isClassic or isVanilla
 ns.IsTurtleWoW = Hekili.IsTurtleWoW or false
 
-Hekili:Print("Compatibility layer loaded for " .. (ns.IsTurtleWoW and "Turtle WoW" or "Classic"))
+-- Print debug message (only if Hekili is fully loaded)
+if Hekili.Print then
+    Hekili:Print("Compatibility layer loaded for " .. (ns.IsTurtleWoW and "Turtle WoW" or "Classic"))
+end
