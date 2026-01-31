@@ -1,4 +1,34 @@
-# Goodbye
+# Hekili for Turtle WoW
+
+**This is a Turtle WoW adaptation of the Hekili addon.** The original Hekili addon for Retail WoW ended development with Midnight (patch 12.0) on January 20th, 2026. This fork adapts the addon to work with Turtle WoW's Vanilla/Classic environment.
+
+## 🐢 Turtle WoW Specific Information
+
+👉 **[See TURTLE_WOW_README.md for full documentation](TURTLE_WOW_README.md)**
+
+### Quick Start for Turtle WoW
+
+1. Download and install to `_classic_/Interface/AddOns/Hekili`
+2. Launch Turtle WoW client
+3. Enable the addon
+4. Use `/hekili` to configure
+
+### What's Different?
+
+- ✅ API compatibility layer for Vanilla 1.12 APIs
+- ✅ Removed Retail-only classes (Monk, Demon Hunter, Evoker)
+- ✅ Removed expansion content (BfA, Shadowlands, Dragonflight, TWW)
+- ✅ Interface version set to 11200 (Vanilla)
+- ⚠️ Some features may not work as expected due to Vanilla limitations
+
+### Supported Classes
+
+All Vanilla classes are included but may need custom priority lists:
+- Death Knight (if on Turtle WoW), Druid, Hunter, Mage, Paladin, Priest, Rogue, Shaman, Warlock, Warrior
+
+---
+
+# Original Readme Below
 
 The Hekili Project on Retail WoW has ended with the launch of the Midnight prepatch, version 12.0, on January 20th 2026. The new direction with Blizzard's API makes it impossible to continue the addon in a way that would meet our design goals and quality standards.
 
