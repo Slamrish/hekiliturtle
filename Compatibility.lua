@@ -7,6 +7,11 @@ local Hekili = _G[addon]
 
 -- Detect game version
 local _, _, _, buildNum = GetBuildInfo()
+-- Build number ranges:
+-- Vanilla/Classic Era: < 20000
+-- TBC Classic: 20000-29999
+-- Wrath Classic: 30000-39999
+-- Retail (Cata+): >= 40000
 local isRetail = buildNum >= 90000
 local isClassic = buildNum < 20000 or (buildNum >= 30000 and buildNum < 40000)
 local isVanilla = buildNum < 20000
@@ -457,7 +462,7 @@ if not IsPlayerSpell then
         -- Check spellbook
         local i = 1
         while true do
-            local spellName, subSpellName = GetSpellName(i, "spell")
+            local spellName = GetSpellInfo(i, "spell")
             if not spellName then break end
             
             local sid = select(7, GetSpellInfo(i, "spell"))
@@ -738,7 +743,5 @@ end
 ns.IsClassicAPI = isClassic or isVanilla
 ns.IsTurtleWoW = Hekili.IsTurtleWoW or false
 
--- Print debug message (only if Hekili is fully loaded)
-if Hekili.Print then
-    Hekili:Print("Compatibility layer loaded for " .. (ns.IsTurtleWoW and "Turtle WoW" or "Classic"))
-end
+-- Note: Debug message removed to avoid initialization order issues
+-- The compatibility layer is loaded before Hekili is fully initialized

@@ -131,10 +131,14 @@ The `Compatibility.lua` file provides the following API translations:
 
 If you want to create optimized priority lists for Vanilla rotations:
 
-1. Edit the spec files in the appropriate expansion folder (e.g., `Wrath/`, `Cataclysm/`)
-2. Use SimulationCraft-style syntax
-3. Reference only spells/abilities available in Vanilla
-4. Test thoroughly in-game
+1. The addon currently loads class definitions from legacy expansion folders (TBC, Wrath, Cataclysm, Legion)
+2. For true Vanilla-optimized rotations, you would need to create new class spec files
+3. These should be placed in a new folder (e.g., `Vanilla/`) and referenced in the TOC file
+4. Use SimulationCraft-style syntax
+5. Reference only spells/abilities available in Vanilla
+6. Test thoroughly in-game
+
+**Note:** The existing priority lists may not be optimal for Vanilla WoW as they were designed for much later expansions with different mechanics.
 
 ### Adding Missing API Wrappers
 
