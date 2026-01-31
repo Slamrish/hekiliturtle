@@ -557,6 +557,83 @@ if not AuraUtil.FindAura then
 end
 
 -- ============================================================================
+-- C_Timer API Compatibility
+-- ============================================================================
+
+if not C_Timer then
+    C_Timer = {}
+    
+    -- After wrapper
+    C_Timer.After = function(duration, callback)
+        -- Use the old-style timer in Classic
+        local frame = CreateFrame("Frame")
+        local elapsed = 0
+        frame:SetScript("OnUpdate", function(self, delta)
+            elapsed = elapsed + delta
+            if elapsed >= duration then
+                frame:SetScript("OnUpdate", nil)
+                callback()
+            end
+        end)
+        return frame
+    end
+    
+    -- NewTimer wrapper (returns a cancelable timer)
+    C_Timer.NewTimer = function(duration, callback)
+        local frame = CreateFrame("Frame")
+        local elapsed = 0
+        local cancelled = false
+        
+        frame.Cancel = function()
+            cancelled = true
+            frame:SetScript("OnUpdate", nil)
+        end
+        
+        frame:SetScript("OnUpdate", function(self, delta)
+            if cancelled then return end
+            elapsed = elapsed + delta
+            if elapsed >= duration then
+                frame:SetScript("OnUpdate", nil)
+                if not cancelled then
+                    callback()
+                end
+            end
+        end)
+        
+        return frame
+    end
+    
+    -- NewTicker wrapper (repeating timer)
+    C_Timer.NewTicker = function(duration, callback, iterations)
+        local frame = CreateFrame("Frame")
+        local elapsed = 0
+        local count = 0
+        local cancelled = false
+        
+        frame.Cancel = function()
+            cancelled = true
+            frame:SetScript("OnUpdate", nil)
+        end
+        
+        frame:SetScript("OnUpdate", function(self, delta)
+            if cancelled then return end
+            elapsed = elapsed + delta
+            if elapsed >= duration then
+                elapsed = 0
+                count = count + 1
+                callback()
+                
+                if iterations and count >= iterations then
+                    frame:SetScript("OnUpdate", nil)
+                end
+            end
+        end)
+        
+        return frame
+    end
+end
+
+-- ============================================================================
 -- C_PetBattles API Compatibility
 -- ============================================================================
 
@@ -604,6 +681,32 @@ if not Enum.SpellBookItemType then
         FlyOut = 2,
         FutureSpell = 3,
         PetAction = 4
+    }
+end
+
+if not Enum.PowerType then
+    Enum.PowerType = {
+        HealthCost = -2,
+        None = -1,
+        Mana = 0,
+        Rage = 1,
+        Focus = 2,
+        Energy = 3,
+        ComboPoints = 4,
+        Runes = 5,
+        RunicPower = 6,
+        SoulShards = 7,
+        LunarPower = 8,
+        HolyPower = 9,
+        Alternate = 10,
+        Maelstrom = 11,
+        Chi = 12,
+        Insanity = 13,
+        Obsolete = 14,
+        Obsolete2 = 15,
+        ArcaneCharges = 16,
+        Fury = 17,
+        Pain = 18
     }
 end
 
